@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Delivery</title>
+  <style>
+    /* General Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f8f9fa;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-image: url('https://png.pngtree.com/background/20230528/original/pngtree-food-spread-on-the-table-picture-image_2782704.jpg'); /* Replace with your image path */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px; /* Wider container */
+  background: #fff;
+  padding: 50px; /* Increased padding */
+  border-radius: 20px; /* Larger border radius */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); /* Deeper shadow */
+}
+
+h2 {
+  font-size: 48px; /* Much larger heading */
+  margin-bottom: 30px; /* Increased margin */
+  color: #333;
+  text-align: center;
+}
+
+p {
+  font-size: 28px; /* Much larger paragraph text */
+  color: #666;
+  margin-bottom: 30px; /* Increased margin */
+  text-align: center;
+}
+
+/* Form Steps */
+.form-step {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  transform: translateX(100%);
+}
+
+.form-step.active {
+  display: block;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Form Groups */
+.form-group {
+  margin-bottom: 40px; /* Increased margin */
+  width: 95%;
+}
+
+label {
+  display: block;
+  font-size: 32px; /* Much larger label text */
+  color: #333;
+  margin-bottom: 15px; /* Increased margin */
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 25px; /* Much larger padding */
+  border: 3px solid #ddd; /* Thicker border */
+  border-radius: 15px; /* Larger border radius */
+  font-size: 28px; /* Much larger font size */
+  color: #333;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #3498db;
+  outline: none;
+  background-color: #fff;
+}
+
+textarea {
+  resize: vertical;
+  height: 250px; /* Much taller textarea */
+}
+
+/* Style for Date and Time Input */
+input[type="datetime-local"] {
+  font-size: 28px; /* Much larger font size */
+  padding: 25px; /* Much larger padding */
+  width: 100%;
+  border: 3px solid #ddd; /* Thicker border */
+  border-radius: 15px; /* Larger border radius */
+  background-color: #fff;
+  cursor: pointer;
+}
+
+/* Increase the size of the calendar icon */
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  transform: scale(2); /* Enlarge the calendar icon */
+  padding: 10px; /* Add padding around the icon */
+}
+
+/* Adjust the calendar popup size (limited browser support) */
+input[type="datetime-local"]::-webkit-datetime-edit {
+  font-size: 28px; /* Larger font size for the selected date */
+  padding: 10px; /* Padding inside the input */
+}
+
+/* Enlarge the spin buttons (up/down arrows) */
+input[type="datetime-local"]::-webkit-inner-spin-button,
+input[type="datetime-local"]::-webkit-outer-spin-button {
+  transform: scale(2); /* Enlarge the spin buttons */
+  margin: 10px; /* Add margin around the buttons */
+}
+
+/* Buttons */
+button {
+  padding: 25px 50px; /* Much larger padding */
+  border: none;
+  border-radius: 15px; /* Larger border radius */
+  font-size: 32px; /* Much larger font size */
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+.paymentDetails
+{
+  width: 95%;
+}
+
+.btn-primary {
+  background: #28a745;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: #218838;
+  transform: scale(1.05);
+}
+
+.btn-secondary {
+  background: #f8f9fa;
+  color: #333;
+  border: 3px solid #ddd; /* Thicker border */
+  margin-right: 20px; /* Increased margin */
+  font-size: 28px; /* Much larger font size */
+}
+
+.btn-secondary:hover {
+  background: #e9ecef;
+  transform: scale(1.05);
+}
+
+/* Options Section */
+.options,
+.categories {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 40px; /* Increased margin */
+}
+
+.option,
+.category {
+  text-align: center;
+  cursor: pointer;
+  padding: 40px; /* Much larger padding */
+  border: 3px solid #ddd; /* Thicker border */
+  border-radius: 20px; /* Larger border radius */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.option:hover,
+.category:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); /* Deeper shadow */
+}
+
+.option img {
+  width: 250px; /* Much larger images */
+  height: 250px; /* Much larger images */
+  border-radius: 20px; /* Larger border radius */
+  margin-bottom: 20px; /* Increased margin */
+}
+
+.option p,
+.category {
+  font-size: 32px; /* Much larger text */
+  color: #333;
+}
+
+/* Restaurants and Menu */
+.restaurants,
+.slideshow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Wider grid items */
+  gap: 40px; /* Increased gap */
+  margin-top: 40px; /* Increased margin */
+}
+
+.restaurant,
+.menu-item {
+  background: #f8f9fa;
+  padding: 40px; /* Much larger padding */
+  border-radius: 20px; /* Larger border radius */
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.restaurant:hover,
+.menu-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); /* Deeper shadow */
+}
+
+.restaurant img,
+.menu-item img {
+  width: 100%;
+  height: 250px; /* Much larger images */
+  object-fit: cover;
+  border-radius: 20px; /* Larger border radius */
+  margin-bottom: 20px; /* Increased margin */
+}
+
+.restaurant p,
+.menu-item p {
+  font-size: 32px; /* Much larger text */
+  color: #333;
+}
+
+/* Buzzwords */
+.buzzwords {
+  display: flex;
+  gap: 20px; /* Increased gap */
+  margin-top: 40px; /* Increased margin */
+  justify-content: center;
+}
+
+.buzzwords button {
+  padding: 20px 40px; /* Much larger padding */
+  font-size: 28px; /* Much larger font size */
+}
+
+/* Order Summary */
+#orderSummary {
+  margin-top: 40px; /* Increased margin */
+  text-align: center;
+}
+
+#orderSummary p {
+  font-size: 32px; /* Much larger text */
+  color: #333;
+  margin-bottom: 20px; /* Increased margin */
+  }/* Style for Date and Time Input */
+input[type="datetime-local"] {
+  font-size: 28px; /* Much larger font size */
+  padding: 25px; /* Much larger padding */
+  width: 100%;
+  border: 3px solid #ddd; /* Thicker border */
+  border-radius: 15px; /* Larger border radius */
+  background-color: #fff;
+  cursor: pointer;
+}
+
+/* Increase the size of the calendar icon */
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  transform: scale(2); /* Enlarge the calendar icon */
+  padding: 10px; /* Add padding around the icon */
+}
+
+/* Adjust the calendar popup size (limited browser support) */
+input[type="datetime-local"]::-webkit-datetime-edit {
+  font-size: 28px; /* Larger font size for the selected date */
+  padding: 10px; /* Padding inside the input */
+}
+
+/* Enlarge the spin buttons (up/down arrows) */
+input[type="datetime-local"]::-webkit-inner-spin-button,
+input[type="datetime-local"]::-webkit-outer-spin-button {
+  transform: scale(2); /* Enlarge the spin buttons */
+  margin: 10px; /* Add margin around the buttons */
+}
+
+  </style>
+  
+</head>
+<body>
+  <div class="container">
+    <!-- Step 1: Login Page -->
+    <div id="step1" class="form-step active">
+      <h2>Welcome to Mar-Vell Restaurant</h2>
+      <p>Please enter your details to proceed.</p>
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input type="text" id="name" placeholder="Enter your name" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone:</label>
+          <input type="tel" id="phone" placeholder="Enter your phone number" required>
+        </div>
+        <div class="form-group">
+          <label for="datetime">Delivery Date & Time:</label>
+          <input type="datetime-local" id="datetime" required>
+        </div>
+        
+        <button type="button" class="btn-primary" onclick="nextStep(2)">Submit</button>
+      </form>
+    </div>
+
+    <!-- Step 2: Veg/Non-Veg Selection -->
+    <div id="step2" class="form-step">
+      <h2>Choose Your Preference</h2>
+      <p>Select your food preference to proceed.</p>
+      <div class="options">
+        <div class="option" onclick="selectPreference('veg')">
+          <img src="https://tse1.mm.bing.net/th?id=OIP.aE3mmRnS1fF1W3nbpLNABwHaHa&pid=Api&P=0&h=180" alt="Veg">
+          <p>Veg</p>
+        </div>
+        <div class="option" onclick="selectPreference('nonVeg')"> <!-- Changed 'non-veg' to 'nonVeg' -->
+          <img src="https://tse1.mm.bing.net/th?id=OIP.SixAhBYVY0w44E74IWLbjAHaEK&pid=Api&P=0&h=180" alt="Non-Veg">
+          <p>Non-Veg</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3: Category Selection (Breakfast, Lunch, Snacks, Dinner) -->
+    <div id="step3" class="form-step">
+      <h2>Choose a Category</h2>
+      <p>Select a category to explore restaurants.</p>
+      <div id="categoryList" class="categories"></div> <!-- Added this line -->
+    </div>
+
+    <!-- Step 4: Restaurant Selection -->
+    <div id="step4" class="form-step">
+      <h2>Choose a Restaurant</h2>
+      <p>Select a restaurant from the list below.</p>
+      <div id="restaurantList" class="restaurants"></div>
+    </div>
+
+    <!-- Step 5: Menu Display -->
+    <div id="step5" class="form-step">
+      <h2>Menu</h2>
+      <p>Select items from the menu.</p>
+      <div id="menuSlideshow" class="slideshow"></div>
+      <button type="button" class="btn-primary" onclick="nextStep(6)">Next</button>
+    </div>
+
+    <!-- Step 6: Food Requirements -->
+    <div id="step6" class="form-step">
+      <h2>Food Requirements</h2>
+      <p>Add any special instructions for your order.</p>
+      <textarea id="specifications" placeholder="Add any special instructions..."></textarea>
+      <div class="buzzwords">
+        <button class="btn-secondary" onclick="addRequirement('Less Spicy')">Less Spicy</button>
+        <button class="btn-secondary" onclick="addRequirement('Extra Cheese')">Extra Cheese</button>
+        <button class="btn-secondary" onclick="addRequirement('Extra veggies')">Extra veggies</button>
+        <button class="btn-secondary" onclick="addRequirement('Low oil')">Low oil</button>
+        <button class="btn-secondary" onclick="addRequirement('More spicy')">More spicy</button>
+        <button class="btn-secondary" onclick="addRequirement('Medium spicy')">Medium Spicy</button>
+      </div>
+      <button type="button" class="btn-primary" onclick="nextStep(7)">Next</button>
+    </div>
+
+    <!-- Step 7: Payment Options -->
+    <div id="step7" class="form-step">
+      <label for="payment">Payment Method:</label>
+    <select id="payment" name="payment" required onchange="togglePaymentFields()">
+        <option>Payment mode</option>
+        <option value="creditCard">Credit Card</option>
+        <option value="debitCard">Debit Card</option> <!-- Added Debit Card option -->
+        <option value="googlePay">Google Pay</option>
+        <option value="paytm">Paytm</option>
+        <option value="phonePe">PhonePe</option>
+        <option value="scanner">Scanner</option>
+        <option value="netBanking">Net Banking</option>
+        <option value="upiId">UPI ID</option>
+    </select>
+    
+    <!-- Credit Card Payment Fields -->
+    <div id="creditCardDetails" class="paymentDetails">
+        <h3>Credit Card Payment</h3>
+        <pre>
+        <label for="cardNumber">Card Number:</label>
+        <input type="text" id="cardNumber" name="cardNumber" required>
+        
+        <label for="expiry">Expiry Date:</label>
+        <input type="text" id="expiry" name="expiry" required>
+        
+        <label for="cvv">CVV:</label>
+        <input type="text" id="cvv" name="cvv" required>
+    </pre>
+    </div>
+
+    <!-- Debit Card Payment Fields -->
+    <div id="debitCardDetails" class="paymentDetails" style="display:none;">
+        <h3>Debit Card Payment</h3>
+        <pre>
+        <label for="debitCardNumber">Debit Card Number:</label>
+        <input type="text" id="debitCardNumber" name="debitCardNumber" required>
+        
+        <label for="debitExpiry">Expiry Date:</label>
+        <input type="text" id="debitExpiry" name="debitExpiry" required>
+        
+        <label for="debitCvv">CVV:</label>
+        <input type="text" id="debitCvv" name="debitCvv" required>
+     </pre>
+    </div>
+
+    <!-- Google Pay Payment Fields -->
+    <div id="googlePayDetails" class="paymentDetails" style="display:none;">
+        <h3>Google Pay Payment</h3>
+        <label for="googlePayPhoneNumber">Google Pay Phone Number:</label>
+        <input type="text" id="googlePayPhoneNumber" name="googlePayPhoneNumber" required>
+    </div>
+
+    <!-- Paytm Payment Fields -->
+    <div id="paytmDetails" class="paymentDetails" style="display:none;">
+        <h3>Paytm Payment</h3>
+        <label for="paytmMobile">Paytm Mobile Number:</label>
+        <input type="text" id="paytmMobile" name="paytmMobile" required>
+    </div>
+
+    <!-- PhonePe Payment Fields -->
+    <div id="phonePeDetails" class="paymentDetails" style="display:none;">
+        <h3>PhonePe Payment</h3>
+        <label for="phonePeMobile">PhonePe Mobile Number:</label>
+        <input type="text" id="phonePeMobile" name="phonePeMobile" required>
+    </div>
+
+    <!-- Scanner Payment Fields -->
+    <div id="scannerDetails" class="paymentDetails" style="display:none;">
+        <h3>Scanner Payment</h3>
+        <img src="scanner.jpg">
+    </div>
+<!-- Net Banking Fields -->
+<div id="netBankingDetails" class="paymentDetails" style="display:none;">
+    <h3>Net Banking Payment</h3>
+    
+    <pre>
+    <label for="bankName">Bank Name:</label>
+    <input type="text" id="bankName" name="bankName" required>
+
+    <label for="accountNumber">Account Number:</label>
+    <input type="text" id="accountNumber" name="accountNumber" required>
+
+    <label for="ifscCode">IFSC Code:</label>
+    <input type="text" id="ifscCode" name="ifscCode" required>
+
+    <label for="branchName">Branch Name:</label>
+    <input type="text" id="branchName" name="branchName" required>
+</pre>
+</div>
+
+
+    <!-- UPI ID Fields -->
+    <div id="upiIdDetails" class="paymentDetails" style="display:none;">
+        <h3>UPI ID Payment</h3>
+        <label for="upiId">UPI ID:</label>
+        <input type="text" id="upiId" name="upiId" required>
+    </div>
+
+      <button type="button" class="btn-primary" onclick="nextStep(8)">Submit</button>
+    </div>
+    <script>
+      function togglePaymentFields() {
+          const paymentMethod = document.getElementById("payment").value;
+  
+          // Hide all payment details by default
+          document.querySelectorAll('.paymentDetails').forEach(div => {
+              div.style.display = "none";
+          });
+  
+          // Show relevant payment fields based on selected method
+          if (paymentMethod === "creditCard") {
+              document.getElementById("creditCardDetails").style.display = "block";
+          } else if (paymentMethod === "debitCard") {
+              document.getElementById("debitCardDetails").style.display = "block";
+          } else if (paymentMethod === "googlePay") {
+              document.getElementById("googlePayDetails").style.display = "block";
+          } else if (paymentMethod === "paytm") {
+              document.getElementById("paytmDetails").style.display = "block";
+          } else if (paymentMethod === "phonePe") {
+              document.getElementById("phonePeDetails").style.display = "block";
+          } else if (paymentMethod === "scanner") {
+              document.getElementById("scannerDetails").style.display = "block";
+          } else if (paymentMethod === "netBanking") {
+              document.getElementById("netBankingDetails").style.display = "block";
+          } else if (paymentMethod === "upiId") {
+              document.getElementById("upiIdDetails").style.display = "block";
+          }
+      }
+  
+      // Call togglePaymentFields when the page loads to show the default payment method (Credit Card)
+      window.onload = function() {
+          togglePaymentFields();
+      };
+  </script>
+  
+    <!-- Step 8: Order Summary -->
+    <div id="step8" class="form-step">
+      <h2>Order Summary</h2>
+      <div id="orderSummary"></div>
+    </div>
+  </div>
+
+  <script>
+    let currentStep = 1;
+let userPreference = '';
+let selectedCategory = '';
+let selectedRestaurant = null;
+let cart = [];
+let requirements = [];
+let userName = '';
+
+let deliveryDateTime = '';
+
+const restaurants = {
+  veg: {
+    breakfast: [
+      { 
+        name: "Murali Krishna Restaurant", 
+        image: "https://farm1.staticflickr.com/519/19142283226_80c99577a3_z.jpg", 
+        menu: [
+          { name: "Idly", price: 150, image: "https://tse1.mm.bing.net/th?id=OIP.OrTVxjF7_Pa20Y9oTH6tQgHaEo&pid=Api&P=0&h=180" },
+          { name: "Karam dosa", price: 75, image: "https://tse1.mm.bing.net/th?id=OIP.ApcN4WlbyBpzgHt-QZ-gPwAAAA&pid=Api&P=0&h=180" },
+          { name: "Pongal", price: 100, image: "https://3.bp.blogspot.com/-k7wuR5PQvOM/UTaOvEurMII/AAAAAAAACC8/J19E-xuelV0/w1200-h630-p-k-no-nu/IMG_7109.JPG" },
+          { name: "Uggani", price: 80, image: "https://i.ytimg.com/vi/LbChJi8s6W4/maxresdefault.jpg" },
+          { name: "Chapathi", price: 80, image: "https://tse1.mm.bing.net/th?id=OIP.qtfvFfAscARBoSPgj6IKXwHaE7&pid=Api&P=0&h=180" },
+          { name: "Bonda", price: 80, image: "https://images.slurrp.com/prod/recipe_images/transcribe/snack/Bonda.webp" }
+        ]
+      },
+      { 
+        name: "Sri Balaji Bhavan", 
+        image: "https://tse2.mm.bing.net/th?id=OIP.WgwqI13k_8kuQr2LE_3vsQHaF7&pid=Api&P=0&h=180", 
+        menu: [
+          { name: "Vada", price: 40, image: "https://img.freepik.com/premium-photo/sambar-vada-medu-vada-popular-south-indian-food-served-with-green-red-coconut-chutney-moody-background-selective-focus_466689-59611.jpg?w=2000" },
+          { name: "Appam", price: 45, image: "https://tse4.mm.bing.net/th?id=OIP.T01RJmIj5aqkKaHsS78nIAHaFD&pid=Api&P=0&h=180" },
+          { name: "Idly-sambar", price: 50, image: "https://www.awesomecuisine.com/wp-content/uploads/2008/02/idli_sambar.jpg" },
+          { name: "Cheese Dosa", price: 90, image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2016/09/cheese-dosai-recipe-600x400.jpg" },
+          { name: "Upma", price: 80, image: "https://tse4.mm.bing.net/th?id=OIP.boBBw90ShLIHl5l9pQvbQgHaE7&pid=Api&P=0&h=180" },
+          { name: "Pesarattu", price: 80, image: "https://tse3.mm.bing.net/th?id=OIP.vRhmrqCavzx_BgNJ7Zh8UgHaGM&pid=Api&P=0&h=180" }
+        ]
+      },
+      { 
+        name: "Hotel Sarvana Bhavan", 
+        image: "https://tse4.mm.bing.net/th?id=OIP.KNZ7rMrgGIOzlBO2j3CorwHaFj&pid=Api&P=0&h=180", 
+        menu: [
+          { name: "Masala Dosa", price: 40, image: "https://img.freepik.com/premium-photo/masala-dosa-is-south-indian-meal-served-with-sambhar-coconut-chutney-selective-focus_466689-22958.jpg?w=2000" },
+          { name: "Poori", price: 45, image: "https://tse4.mm.bing.net/th?id=OIP.98EL-or-Hio0D7NKuo7hHgHaE8&pid=Api&P=0&h=180" },
+          { name: "Idly", price: 50, image: "https://thumbs.dreamstime.com/z/many-idli-idly-chutney-powder-popular-homemade-breakfast-kerala-tamil-nadu-south-india-sri-lanka-arranged-banana-189827476.jpg" },
+          { name: "Mysore Bonda", price: 90, image: "https://tse4.mm.bing.net/th?id=OIP.Sb7PHBgI6eJMPu6CSN4yiwHaFj&pid=Api&P=0&h=180" },
+          { name: "Paneer Dosa", price: 80, image: "https://tse1.mm.bing.net/th?id=OIP.pG-MXf8NJEwKCh0MYrbXtwAAAA&pid=Api&P=0&h=180" },
+          { name: "Ghee Karam Dosa", price: 80, image: "https://tse4.mm.bing.net/th?id=OIP.CliYYXaYnBaac9jkVSCniQHaFU&pid=Api&P=0&h=180" }
+        ]
+      }
+    ],
+    lunch: [
+      { 
+        name: "Subbaya Gari Hotel", 
+        image: "https://i.pinimg.com/originals/0f/13/7d/0f137d2a243f7b63e5716ab4c10c3ee3.jpg", 
+        menu: [
+          { name: "Curd rice", price: 80, image: "https://tse1.mm.bing.net/th?id=OIP.9uZ3d0biEgw8sUPvjb4DOAHaJ4&pid=Api&P=0&h=180" },
+          { name: "Veg Fried Rice", price: 180, image: "https://tse1.mm.bing.net/th?id=OIP.4wrRVc6j3A9vtrOafulXigHaFM&pid=Api&P=0&h=180" },
+          { name: "Mushroom Biryani", price: 200, image: "https://tse4.mm.bing.net/th?id=OIP.CV4dgf6pCiupeftMqEXUMwHaEK&pid=Api&P=0&h=180" },
+          { name: "Butta Bhojanam", price: 290, image: "https://i.ytimg.com/vi/nYBFuVCyYEw/maxresdefault.jpg" },
+          { name: "Baby corn", price: 209, image: "https://www.archanaskitchen.com/images/archanaskitchen/1-Author/Prasanna_Manerkar/Crispy_Tossed_Baby_Corn.jpg" },
+          { name: "Kaju Gobi masala", price: 290, image: "https://tse3.mm.bing.net/th?id=OIP.UJbyuNqNF8bsngj15cV7CQHaD5&pid=Api&P=0&h=180" }
+        ]
+      },
+      { 
+        name: "Ganesh mess", 
+        image: "https://tse4.mm.bing.net/th?id=OIP.IT1-w7ncXyTe61NEhOxORwHaEL&pid=Api&P=0&h=180", 
+        menu: [
+          { name: "Jeera rice", price: 90, image: "https://tse2.mm.bing.net/th?id=OIP.x-yfYD12QTnsh2GpIdKWPgHaHa&pid=Api&P=0&h=180" },
+          { name: "Kaju Fried Rice", price: 110, image: "https://i.ytimg.com/vi/MJ86dS3-3YI/maxresdefault.jpg" },
+          { name: "Palak paneer", price: 175, image: "https://recipes.timesofindia.com/photo/53093667.cms" },
+          { name: "Kadai Paneer", price: 200, image: "https://tse4.mm.bing.net/th?id=OIP.FXqSV1UDRXud3U1fMBPmLAHaHa&pid=Api&P=0&h=180" },
+          { name: "Roti", price: 10, image: "https://tse3.mm.bing.net/th?id=OIP.6CQuC0Koi5HdF_-Thny55AHaHa&pid=Api&P=0&h=180" },
+          { name: "Veg meals", price: 290, image: "https://d1oh9y2nmj4y5b.cloudfront.net/uploads/photo/filename/7580/Authentic_South_Indian_Meal_Served_for_guests.jpg" }
+        ]
+      },
+      { 
+        name: "Govindas Veg Restaurent", 
+        image: "https://i.redd.it/f69km2tizqx11.jpg", 
+        menu: [
+          { name: "Gobi munchuria", price: 90, image: "https://tse3.mm.bing.net/th?id=OIP.5PvO_615yFhu96cQuu9irwHaGM&pid=Api&P=0&h=180" },
+          { name: "Cashew nut pakoda", price: 80, image: "https://tse1.mm.bing.net/th?id=OIP.h7ewD23uJR87C5dDDVdPiQHaE8&pid=Api&P=0&h=180" },
+          { name: "Veg thali", price: 175, image: "https://img.freepik.com/premium-photo/veg-thali-from-indian-cuisine-food-platter-consists-variety-veggiespaneer-dish-lentilsriceroti-sweet-dish-snacks-etc-selective-focus_726363-592.jpg?w=2000" },
+          { name: "Capsicum masala", price: 110, image: "https://tse3.mm.bing.net/th?id=OIP.lOGJ7fruT5e2lWLk5Dy5vAHaLA&pid=Api&P=0&h=180" },
+          { name: "Paneer fried rice", price: 130, image: "https://d3cm4d6rq8ed33.cloudfront.net/media/navpravartakfiles/19/fe94f71c-020c-4aa6-a512-aad967ce90dc.jpg" },
+          { name: "Jack fruit biryani", price: 1850, image: "https://tse3.mm.bing.net/th?id=OIP.bEBUodEwTYVY5Wh4Vl28GQHaE7&pid=Api&P=0&h=180" }
+        ]
+      }
+    ],
+    snacks: [
+      { 
+        name: "Snack Hub", 
+        image: "https://tse4.mm.bing.net/th?id=OIP.Jc1WbGnT-GAPyKBl8VXPZgHaFj&pid=Api&P=0&h=180", 
+        menu: [
+          { name: "Samosa", price: 30, image: "https://tse2.mm.bing.net/th?id=OIP.Za740rFsOukbqfwtNMa4FwHaJQ&pid=Api&P=0&h=180" },
+          { name: "Pav Bhaji", price: 60, image: "https://tse2.mm.bing.net/th?id=OIP.bjpTLW2E7QMuXzlIe2JsrwHaGs&pid=Api&P=0&h=180" },
+          { name: "Mirchi Bajji", price: 40, image: "https://tse1.mm.bing.net/th?id=OIP.gMyg_DLZqtBaRSomY9GtugHaEo&pid=Api&P=0&h=180" },
+          { name: "Sandwitch", price: 50, image: "https://tse4.mm.bing.net/th?id=OIP.s5p7jWSmm8tBrQvVImYHBwHaFX&pid=Api&P=0&h=180" },
+          { name: "veg rolls", price: 60, image: "https://vegecravings.com/wp-content/uploads/2016/09/spring-roll-recipe-step-by-step-instructions.jpg" },
+          { name: "curry puff", price: 20, image: "https://www.thespruceeats.com/thmb/Yc40G44jf8tT6PUWkXIJyEsUQ80=/4048x2696/filters:fill(auto,1)/curry-puffs-recipe-256156-hero-01-5094b1f370a64766b00768327f613584.jpg" }
+        ]
+      },
+      { 
+        name: "Extra Bakes", 
+        image: "https://static.wixstatic.com/media/9dad4c_8f9d90a5176e4aae882e2ac89f24b0cc~mv2_d_4898_3265_s_4_2.jpg/v1/fill/w_1000,h_667,al_c,q_90,usm_0.66_1.00_0.01/9dad4c_8f9d90a5176e4aae882e2ac89f24b0cc~mv2_d_4898_3265_s_4_2.jpg", 
+        menu: [
+          { name: "Paneer puff", price: 30, image: "https://tse2.mm.bing.net/th?id=OIP.c39FfLEnVyG6hSYUssBPlgHaJz&pid=Api&P=0&h=180" },
+          { name: "French fries", price: 60, image: "https://tse4.mm.bing.net/th?id=OIP.Jmg8k0E-E_Zy1dSj_tjYjgHaE8&pid=Api&P=0&h=180" },
+          { name: "Allo bajji", price: 40, image: "https://i.ytimg.com/vi/IeIRVWKDPFQ/maxresdefault.jpg" },
+          { name: "Sandwitch", price: 40, image: "https://assets.elgourmet.com/wp-content/uploads/2023/10/shutterstock_2180078389.jpg" },
+          { name: "Korean cheese bun", price: 50, image: "https://tse3.mm.bing.net/th?id=OIP.JYPIIU_j0gtW3nDAhd3lgwHaHa&pid=Api&P=0&h=180" },
+          { name: "Veg puff", price: 25, image: "https://tse4.mm.bing.net/th?id=OIP.oaqc3kivx7QKOUcvClK2lwHaFj&pid=Api&P=0&h=180" }
+        ]
+      },
+      { 
+        name: "Karachi Bkery", 
+        image: "https://tse4.mm.bing.net/th?id=OIP.mhgnhJXpXMtCkQI8WyKzmwHaEK&pid=Api&P=0&h=180", 
+        menu: [
+          { name: "Blueberry cheese cake", price: 30, image: "https://tse3.mm.bing.net/th?id=OIP.5epuMvaKrMJB1fJLAUatugHaLH&pid=Api&P=0&h=180" },
+          { name: "Red velevet cake", price: 110, image: "https://tse2.mm.bing.net/th?id=OIP.udBr42Cpf-ZBjzeJEzYGVgHaFr&pid=Api&P=0&h=180" },
+          { name: "Choco tuffle", price: 100, image: "https://www.tasteofhome.com/wp-content/uploads/2018/01/Chocolate-Truffles_EXPS_HCA17_13122_B10_20_3b.jpg" },
+          { name: "Grilled sandswitch", price: 70, image: "https://tse2.mm.bing.net/th?id=OIP.4fke8jbJTBdQa-_aBQXH7gHaFj&pid=Api&P=0&h=180" },
+          { name: "Fruit Biscuits", price: 100, image: "https://thumbs.dreamstime.com/z/indian-biscuits-made-flour-sugar-dried-fruitand-salt-also-known-as-fruit-biscuits-karachi-bakery-hyderabad-29744211.jpg" },
+          { name: "veg pizza roll", price: 60, image: "https://tse3.mm.bing.net/th?id=OIP.EUp9ZTXx19wqBFWIy-TW7AHaLI&pid=Api&P=0&h=180" }
+        ]
+      }
+    ],
+    dinner: [
+      { 
+        name: "Dinner Delight", 
+        image: "https://tse1.mm.bing.net/th?id=OIP.3SMMtPMUPUqGFyJ4bUJgpAHaEK&pid=Api&P=0&h=180", 
+        menu: [
+          { name: "Panner Butter masala", price: 150, image: "https://tse1.mm.bing.net/th?id=OIP.nR-p2bO_B6UkT4h94zaWuQHaHa&pid=Api&P=0&h=180" },
+          { name: "Cashew masala", price: 120, image: "https://en.petitchef.com/imgupl/recipe/kaju-butter-masala-cashew-curry--41155p50317.jpg" },
+          { name: "Alu mutter", price: 100, image: "https://www.cubesnjuliennes.com/wp-content/uploads/2020/07/Punjabi-Aloo-Matar-Recipe.jpg" },
+          { name: "Veg soft noodles", price: 90, image: "https://tse2.mm.bing.net/th?id=OIP.6gCeaI8CI5CSPMoEnNtW7gHaE7&pid=Api&P=0&h=180" },
+          { name: "Chiili garlic noodels", price: 100, image: "https://www.whiskaffair.com/wp-content/uploads/2020/02/Chilli-Garlic-Noodles-2-1.jpg" },
+          { name: "Gulab jamun", price: 40, image: "https://tse1.mm.bing.net/th?id=OIP.jHVOWwSFJmKm4WYjoOIS0QHaFk&pid=Api&P=0&h=180" }
+        ]
+      },
+      { 
+        name: "Surabi Grand", 
+        image: "https://img.freepik.com/premium-photo/tandoori-chicken-is-chicken-dish-prepared-by-roasting-chicken-marinated-yogurt-spices-tandoor-clay-oven-served-with-onion-green-chutney_466689-77630.jpg", 
+        menu: [
+          { name: "Butter scotch", price: 150, image: "https://tse1.mm.bing.net/th?id=OIP.OQU8y_7GNqFlFCd6-4LWyQHaGA&pid=Api&P=0&h=180" },
+          { name: "Brwoni", price: 90, image: "https://tse2.mm.bing.net/th?id=OIP.9s1A2r_kyY_lZcCAqdAHTgHaE8&pid=Api&P=0&h=180" },
+          { name: "Dry fruit kulfi", price: 40, image: "https://i.ytimg.com/vi/60BNP7HdNHQ/maxresdefault.jpg" },
+          { name: "Casata", price: 80, image: "https://tse3.mm.bing.net/th?id=OIP.UXxcPSwX2j6TzfGiHybgLwHaFj&pid=Api&P=0&h=180" },
+          { name: "Caramel nuts", price: 75, image: "https://tse1.mm.bing.net/th?id=OIP.l3be179j3HzbC6zCwtt3VgHaD4&pid=Api&P=0&h=180" },
+          { name: "Chcolate truffle", price: 90, image: "https://tse1.mm.bing.net/th?id=OIP.5HaRE6P-TMTLBLXDmX1CQQHaKX&pid=Api&P=0&h=180" }
+        ]
+      },
+      { 
+        name: "Punjabi Dhaba", 
+        image: "https://images.bolt.eu/store/2020/2020-11-27/aa5c533a-413a-422e-8b06-27db4c08d8de.jpeg", 
+        menu: [
+          { name: "Maharastraian thaali", price: 150, image: "https://tse1.mm.bing.net/th?id=OIP.RFhnSLEPSppWqxXmHq6AaAHaEn&pid=Api&P=0&h=180" },
+          { name: "Butter naan", price: 220, image: "https://tse3.mm.bing.net/th?id=OIP.-VoUJjHDnXGlvmrSa2cWxgHaE8&pid=Api&P=0&h=180" },
+          { name: "Gralic naan", price: 100, image: "https://tse4.mm.bing.net/th?id=OIP.DhgB5v6koG3naKrT4pDIMQHaJQ&pid=Api&P=0&h=180" },
+          { name: "Bhindi masala", price: 90, image: "https://tse4.mm.bing.net/th?id=OIP.zei7pYWRTG-55nmQvgy8tgHaF4&pid=Api&P=0&h=180" },
+          { name: "Veg handi", price: 100, image: "https://tse4.mm.bing.net/th?id=OIP.e3jZ6rNEPakpb86q1WZrgQHaEK&pid=Api&P=0&h=180" },
+          { name: "mutter masala", price: 90, image: "https://tse2.mm.bing.net/th?id=OIP.7V9nrJDGal-_YQAg-WN60wHaFa&pid=Api&P=0&h=180" }
+        ]
+      }
+    ]
+  },
+  nonVeg: {
+    breakfast: [
+      { 
+        name: "Sri jayalakshmi tffins", 
+        image: "https://tse4.mm.bing.net/th?id=OIP.hosGJ0TOL-RFEOwXAZSwcgHaEb&pid=Api&P=0&h=180", 
+        menu: [
+          { name: "Egg dosa", price: 200, image: "https://tse4.mm.bing.net/th?id=OIP.Y_vXEbPCwtl_Z8vrjBZGqAHaFg&pid=Api&P=0&h=180" },
+          { name: "Chicken keema dosa", price: 300, image: "https://tse2.mm.bing.net/th?id=OIP.GwWKrpOb2XDP5UhtV7ctgQHaHa&pid=Api&P=0&h=180" },
+          { name: "poori -chicken", price: 120, image: "https://tse3.mm.bing.net/th?id=OIP.TLx2zfPsPmqtSdcGNG6ORwHaFP&pid=Api&P=0&h=180" },
+          { name: "idly-mutton paya", price: 120, image: "https://tse3.mm.bing.net/th?id=OIP.5D9se28Umg3WFItsZ9n_8gHaLG&pid=Api&P=0&h=180" },
+          { name: "double egg dosa", price: 120, image: "https://tse1.mm.bing.net/th?id=OIP.VMh_uNqoB-GGNyFGn34boAHaE7&pid=Api&P=0&h=180" },
+          { name: "poori-mutton", price: 120, image: "https://tse2.mm.bing.net/th?id=OIP.R2c-Wd53DlWHOkjcBVKTgwHaEK&pid=Api&P=0&h=180" }
+        ]
+      },
+      { 
+        name: "Gayathri tiffins", 
+        image: "https://tse2.mm.bing.net/th?id=OIP.e8f1uS7nAhGxoRIlgBrRwQHaEK&pid=Api&P=0&h=180", 
+        menu: [
+          { name: "Egg dosa", price: 200, image: "https://tse4.mm.bing.net/th?id=OIP.Y_vXEbPCwtl_Z8vrjBZGqAHaFg&pid=Api&P=0&h=180" },
+          { name: "Chicken cheese omlete", price: 300, image: "https://tse2.mm.bing.net/th?id=OIP.0wAsZcltNgyxrCe9eNfW8AHaLH&pid=Api&P=0&h=180" },
+          { name: "egg idiyapam", price: 120, image: "https://tse3.mm.bing.net/th?id=OIP.BFsqo1Er2bKxa-10lUyUaQHaE8&pid=Api&P=0&h=180" },
+          { name: "chicken poha", price: 120, image: "https://tse1.mm.bing.net/th?id=OIP.D4RExCI1TNeKkhvR90TwyAHaGg&pid=Api&P=0&h=180" },
+          { name: "Egg curry with chapathi", price: 120, image: "https://tse2.mm.bing.net/th?id=OIP.gt0PCxGbyWt5vm0xZxcIMQHaHa&pid=Api&P=0&h=180" },
+          { name: "chicken keema Dosa", price: 120, image: "https://tse2.mm.bing.net/th?id=OIP.tauAzDj7Wzy5KpUV91mP4AHaHa&pid=Api&P=0&h=180" }
+        ]
+      }
+    ],
+    lunch: [
+      { 
+        name: "Naidu gari kunda Biryani", 
+        image: "https://tse3.mm.bing.net/th?id=OIP.5kjxJhdXmEGSJlxBg6HTxgHaE8&pid=Api&P=0&h=180", 
+        menu: [
+          { name: "Chicken Biryani", price: 250, image: "https://tse3.mm.bing.net/th?id=OIP.niF8N9Z3Hl8u7-rC6c5rHQHaHa&pid=Api&P=0&h=180" },
+          { name: "Mutton Biryani", price: 400, image: "https://tse2.mm.bing.net/th?id=OIP.pK3hTwN_FIWMmNhocPG9tgHaHa&pid=Api&P=0&h=180" },
+          { name: "Kaju chicken Dry", price: 80, image: "https://tse2.mm.bing.net/th?id=OIP.JXF9qWPjHSuJOXG2MeHwiQHaEK&pid=Api&P=0&h=180" },
+          { name: "chiili chicken", price: 90, image: "https://tse4.mm.bing.net/th?id=OIP.zdPvROmPIe20IuOcFtYQrwHaE8&pid=Api&P=0&h=180" },
+          { name: "Tandoori chicken", price: 90, image: "https://tse2.mm.bing.net/th?id=OIP.0GdTSfr1tFAY1xVoraAX6wHaF6&pid=Api&P=0&h=180" },
+          { name: "Chicken pot Biryani", price: 90, image: "https://tse1.mm.bing.net/th?id=OIP.CMV98hR5u-F4o_B_yPT7zgHaE8&pid=Api&P=0&h=180" }
+        ]
+      },
+      { 
+        name: "Paradise Biryani", 
+        image: "https://tse2.mm.bing.net/th?id=OIP.32ckMsmu3WeIYrHO5tGmhwHaE8&pid=Api&P=0&h=180", 
+        menu: [
+          { name: "Chicken Wings", price: 250, image: "https://tse1.mm.bing.net/th?id=OIP.-ztsUQI-GTLFZ9D9BujFmAHaE8&pid=Api&P=0&h=180" },
+          { name: "Mutton Biryani", price: 400, image: "https://recipes.timesofindia.com/photo/53094793.cms" },
+          { name: "Chicken majestic", price: 80, image: "https://tse2.mm.bing.net/th?id=OIP.uioIJCR_oKIkSggLRNogpAHaE7&pid=Api&P=0&h=180" },
+          { name: "Prwans Biryani", price: 90, image: "https://tse1.mm.bing.net/th?id=OIP.vdLnWlA9GMqKHUshtlCQnAHaHa&pid=Api&P=0&h=180" },
+          { name: "Dragon Chicken", price: 80, image: "https://tse1.mm.bing.net/th?id=OIP.ybXlZi7lwbeQ_BVECFQoZQHaE8&pid=Api&P=0&h=180" },
+          { name: "Mutton roast", price: 80, image: "https://tse3.mm.bing.net/th?id=OIP.8q5bhif7b85yssMO_JclkwHaE6&pid=Api&P=0&h=180" }
+        ]
+      },
+      { 
+        name: "Kitchen Garden", 
+        image: "https://tse3.mm.bing.net/th?id=OIP.10YH4iOFRaymat04YLz8HwHaEj&pid=Api&P=0&h=180", 
+        menu: [
+          { name: "Fried chicken", price: 250, image: "https://tse3.mm.bing.net/th?id=OIP.Mj5AxHB7bt4cbh7594-HfAHaHa&pid=Api&P=0&h=180" },
+          { name: "Chicken soup", price: 400, image: "https://tse1.mm.bing.net/th?id=OIP.90eDU1XMYhO2qP1MLDXuogHaFj&pid=Api&P=0&h=180" },
+          { name: "Fish biryani", price: 80, image: "https://tse3.mm.bing.net/th?id=OIP.Y9dF150pyuX6gLxA7eZOQwHaEK&pid=Api&P=0&h=180" },
+          { name: "Apolo Fish", price: 90, image: "https://tse3.mm.bing.net/th?id=OIP.WrC5kpz_b4gZsHhh9kaDgwHaHa&pid=Api&P=0&h=180" },
+          { name: "Arabian mandi", price: 80, image: "https://tse2.mm.bing.net/th?id=OIP.yNo6MQ0lV_R7PGpmh1f8JQHaEK&pid=Api&P=0&h=180" },
+          { name: "Mutton juice mandi", price: 80, image: "https://tse2.mm.bing.net/th?id=OIP.abFECxaIN8XmiiB4gy4XEQHaEK&pid=Api&P=0&h=180" }
+        ]
+      }
+    ],
+    snacks: [
+      { 
+        name: "Srishti snacks", 
+        image: "https://tse1.mm.bing.net/th?id=OIP.msF_30mfwUAhzp3mf8dkPAHaGl&pid=Api&P=0&h=180", 
+        menu: [
+          { name: "Chicken Lollipop", price: 220, image: "https://tse4.mm.bing.net/th?id=OIP.XD_h36tpTHaEQGnkAfLOAAHaHa&pid=Api&P=0&h=180" },
+          { name: "Chicken Shawarma", price: 150, image: "https://tse4.mm.bing.net/th?id=OIP.ETWaZrpkjtqRlbSFYqZgcQHaHa&pid=Api&P=0&h=180" },
+          { name: "Egg puff", price: 100, image: "https://tse4.mm.bing.net/th?id=OIP.Tvv5sweqo-HpRzVSx49SzwHaE8&pid=Api&P=0&h=180" },
+          { name: "Chicken puff", price: 90, image: "https://tse2.mm.bing.net/th?id=OIP.OCbHJVkGu5-S34JCY3TAyAHaEl&pid=Api&P=0&h=180" },
+          { name: "Pani puri", price: 80, image: "https://tse3.mm.bing.net/th?id=OIP.a5ugNvegfXL7pg8SKgJVwwHaFj&pid=Api&P=0&h=180" },
+          { name: "Chicken sandwitch", price: 80, image: "https://tse3.mm.bing.net/th?id=OIP.Z39jAc1Uo_9XqJnKDNFpiwHaE7&pid=Api&P=0&h=180" }
+        ]
+      },
+      { 
+        name: "KFC", 
+        image: "https://tse3.mm.bing.net/th?id=OIP.fU1f4Q6Ctp1XJvSGxh7bZQHaEK&pid=Api&P=0&h=180", 
+        menu: [
+          { name: "Chicken crunch meal", price: 475, image: "https://tse4.mm.bing.net/th?id=OIP.ZZxrRdfzY6eXl1-rJr1eDAHaF3&pid=Api&P=0&h=180" },
+          { name: "Tandoori chicken box", price: 330, image: "https://tse3.mm.bing.net/th?id=OIP.TGy1CUTtrcxofXlTcotmMgHaHa&pid=Api&P=0&h=180" },
+          { name: "Peri Peri chicken strips", price: 400, image: "https://tse1.mm.bing.net/th?id=OIP.lUqPZlsS0mUL9-SUV69-oQAAAA&pid=Api&P=0&h=180" },
+          { name: "spicy chicken burger", price: 200, image: "https://tse3.mm.bing.net/th?id=OIP.YIuhrX1MRLO3leVlkdjkYwAAAA&pid=Api&P=0&h=180" },
+          { name: "Super 6s chicken bucket", price: 799, image: "https://tse3.mm.bing.net/th?id=OIP.apGD5oFdZSuVOjlkcZUwtQHaHa&pid=Api&P=0&h=180" },
+          { name: "Chicken popcorn", price: 329, image: "https://tse1.mm.bing.net/th?id=OIP.7SfH2jqoSZhquVM2jjcICAHaE8&pid=Api&P=0&h=180" }
+        ]
+      },
+      { 
+        name: "Ibaco", 
+        image: "https://tse3.mm.bing.net/th?id=OIP.XmiNhOfrec8qPUgE3wojkQAAAA&pid=Api&P=0&h=180", 
+        menu: [
+          { name: "White chocolate", price: 70, image: "https://tse2.mm.bing.net/th?id=OIP.C5c_xqrx_lbF0DmBEcNjggHaHa&pid=Api&P=0&h=180" },
+          { name: "Chocolate browny", price: 145, image: "https://tse3.mm.bing.net/th?id=OIP.6Q4CKDXv_unO81Ts_FbzygHaLH&pid=Api&P=0&h=180" },
+          { name: "Chocolate fludze browny", price: 130, image: "https://tse2.mm.bing.net/th?id=OIP.05mdWGsop1ks6jbaVQ6Y6gHaJQ&pid=Api&P=0&h=180" },
+          { name: "Nuts overload Icecream", price: 100, image: "https://tse1.mm.bing.net/th?id=OIP.umrbuHKXeY0YBkbXrZBSKQHaEK&pid=Api&P=0&h=180" },
+          { name: "Milkshake", price: 50, image: "https://tse2.mm.bing.net/th?id=OIP.vAiCxspRQSkb0_-13txH1wHaJQ&pid=Api&P=0&h=180" },
+          { name: "Black current icecream", price: 200, image: "https://tse2.mm.bing.net/th?id=OIP.I7hY532IzTpQXXxZwprjywHaD4&pid=Api&P=0&h=180" }
+        ]
+      }
+    ],
+    dinner: [
+      { 
+        name: "BBQ Nation", 
+        image: "https://tse4.mm.bing.net/th?id=OIP.uNDp4xSB9IJtwZ20YcT09wHaE6&pid=Api&P=0&h=180", 
+        menu: [
+          { name: "Grilled Chicken", price: 300, image: "https://tse2.mm.bing.net/th?id=OIP.fRed2wxh8swVz3a8Dr0xYgHaE7&pid=Api&P=0&h=180" },
+          { name: "Butter Chicken", price: 280, image: "https://tse2.mm.bing.net/th?id=OIP.ymVxogdnrcb3OdXrKMwEcgHaGP&pid=Api&P=0&h=180" },
+          { name: "Brbeque chicken tikka", price: 120, image: "https://tse4.mm.bing.net/th?id=OIP.lNDX2J8uBQeVpxzbJnrXrQHaEK&pid=Api&P=0&h=180" },
+          { name: "Chciken corn soup", price: 100, image: "https://tse3.mm.bing.net/th?id=OIP.Ad0IHcs3qcD2gbQrdep6TQHaJ4&pid=Api&P=0&h=180" },
+          { name: "Fish kabab", price: 100, image: "https://tse4.mm.bing.net/th?id=OIP.3rGhz0eOCVGax6bdhdtmuwHaEK&pid=Api&P=0&h=180" },
+          { name: "Mock tails", price: 100, image: "https://tse3.mm.bing.net/th?id=OIP.v2PhslB3BwTh7O46wTN_LQHaE8&pid=Api&P=0&h=180" }
+        ]
+      },
+      { 
+        name: "RR Fanily dhaba", 
+        image: "https://tse2.mm.bing.net/th?id=OIP.r9ichuMzfYYiJpEdy-4hugHaHa&pid=Api&P=0&h=180", 
+        menu: [
+          { name: "Leg piece fry", price: 175, image: "https://tse2.mm.bing.net/th?id=OIP.sPpJ8HyMaqza1E1PRTLSPAHaE8&pid=Api&P=0&h=180" },
+          { name: "Butter chicken", price: 230, image: "https://tse2.mm.bing.net/th?id=OIP.ymVxogdnrcb3OdXrKMwEcgHaGP&pid=Api&P=0&h=180" },
+          { name: "Kaju chicken dry", price: 170, image: "https://tse2.mm.bing.net/th?id=OIP.LTJkpjZrDjCcbsqxbZW_TwHaEK&pid=Api&P=0&h=180" },
+          { name: "prawns Biryani", price: 250, image: "https://www.archanaskitchen.com/images/archanaskitchen/1-Author/Shaheen_Ali/CHETTINAD_STYLE_PRAWN_BIRYANI.jpg" },
+          { name: "Roti", price: 10, image: "https://tse3.mm.bing.net/th?id=OIP.bA6PWaQC1uRS1RchkBf7dwHaJF&pid=Api&P=0&h=180" },
+          { name: "Rambha chicken curry", price: 250, image: "https://tse3.mm.bing.net/th?id=OIP.faCu_sis2pT3ZpVlPopO4AHaKC&pid=Api&P=0&h=180" }
+        ]
+      },
+      { 
+        name: "Ragu Gari Ruchulu", 
+        image: "https://assets.zeezest.com/images/PROD_A_1664167434483.jpg", 
+        menu: [
+          { name: "Dragon chicken", price: 250, image: "https://tse3.mm.bing.net/th?id=OIP.M_raMpZyz1hVonJE2YeUggHaJ4&pid=Api&P=0&h=180" },
+          { name: "Chicken fry biryani", price: 300, image: "https://tse1.mm.bing.net/th?id=OIP.ajiyfSbb7bL5vxwd4lxTyQHaEK&pid=Api&P=0&h=180" },
+          { name: "Natukodi fry biryani", price: 350, image: "https://tse2.mm.bing.net/th?id=OIP.ocFoCz2IqG_8BvSbNAOztQHaEK&pid=Api&P=0&h=180" },
+          { name: "Apolo fish", price: 270, image: "https://tse3.mm.bing.net/th?id=OIP.WrC5kpz_b4gZsHhh9kaDgwHaHa&pid=Api&P=0&h=180" },
+          { name: "Chitti mutyala Birani", price: 400, image: "https://tse2.mm.bing.net/th?id=OIP.bmu8lmL0LSmAK9jOZk4pZwAAAA&pid=Api&P=0&h=180" },
+          { name: "Mutton Rogan Josh", price: 500, image: "https://tse2.mm.bing.net/th?id=OIP.sZJMuDAqLZXtns2bssLZ0QHaE8&pid=Api&P=0&h=180" }
+        ]
+      }
+    ]
+  }
+};
+
+function nextStep(step) {
+  if (step === 2) {
+    // Save user details from Step 1
+    userName = document.getElementById('name').value;
+    
+    deliveryDateTime = document.getElementById('datetime').value;
+  }
+
+  document.getElementById(`step${currentStep}`).classList.remove('active');
+  document.getElementById(`step${step}`).classList.add('active');
+  currentStep = step;
+
+  if (step === 3) loadCategories();
+  if (step === 4) loadRestaurants();
+  if (step === 5) loadMenu();
+  if (step === 8) showOrderSummary();
+}
+
+function selectPreference(preference) {
+  userPreference = preference;
+  nextStep(3);
+}
+
+function selectCategory(category) {
+  selectedCategory = category;
+  nextStep(4);
+}
+
+function loadCategories() {
+  const categoryList = document.getElementById('categoryList');
+  categoryList.innerHTML = '';
+  const categories = Object.keys(restaurants[userPreference]);
+  categories.forEach(category => {
+    const div = document.createElement('div');
+    div.className = 'category';
+    div.innerHTML = `<p>${category}</p>`;
+    div.onclick = () => selectCategory(category);
+    categoryList.appendChild(div);
+  });
+}
+
+function loadRestaurants() {
+  const restaurantList = document.getElementById('restaurantList');
+  restaurantList.innerHTML = '';
+  const list = restaurants[userPreference][selectedCategory];
+  list.forEach(restaurant => {
+    const div = document.createElement('div');
+    div.className = 'restaurant';
+    div.innerHTML = `
+      <img src="${restaurant.image}" alt="${restaurant.name}">
+      <p>${restaurant.name}</p>
+    `;
+    div.onclick = () => {
+      selectedRestaurant = restaurant;
+      nextStep(5);
+    };
+    restaurantList.appendChild(div);
+  });
+}
+
+function loadMenu() {
+  const menuSlideshow = document.getElementById('menuSlideshow');
+  menuSlideshow.innerHTML = '';
+  selectedRestaurant.menu.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'menu-item';
+    div.innerHTML = `
+      <img src="${item.image}" alt="${item.name}">
+      <p>${item.name} - ₹${item.price}</p>
+      <button onclick="addToCart('${item.name}', ${item.price})">Add to Cart</button>
+    `;
+    menuSlideshow.appendChild(div);
+  });
+}
+
+function addToCart(name, price) {
+  cart.push({ name, price });
+  alert(`${name} added to cart!`);
+}
+
+function addRequirement(requirement) {
+  requirements.push(requirement);
+  document.getElementById('specifications').value = requirements.join(', ');
+}
+
+function showOrderSummary() {
+  const orderSummary = document.getElementById('orderSummary');
+  orderSummary.innerHTML = `
+    <h2>Thank you, ${userName}!</h2>
+    <p>Your order will be delivered to:</p>
+    
+    <p>by <strong>${deliveryDateTime}</strong>.</p>
+    <h2>Your Order:</h2>
+  `;
+
+  let total = 0;
+  cart.forEach(item => {
+    orderSummary.innerHTML += `<p>${item.name} - ₹${item.price}</p>`;
+    total += item.price;
+  });
+
+  orderSummary.innerHTML += `
+    <p><strong>Total: ₹${total}</strong></p>
+    <p>Requirements: ${requirements.join(', ')}</p>
+    <h3>Thank you for ordering! Your food is on the way. 🚀</h3>
+  `;
+}
+
+  </script>
+</body>
+</html>

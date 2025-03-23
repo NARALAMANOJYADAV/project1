@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enter Table Number</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        input {
+            padding: 10px;
+            font-size: 18px;
+            margin: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+    <script>
+        function submitTable() {
+            let tableNumber = document.getElementById("tableInput").value;
+            if (tableNumber && !isNaN(tableNumber) && tableNumber > 0 && tableNumber <= 20) {
+                window.location.href = "index.html";
+            } else {
+                alert("Please enter a valid table number (1-20).");
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Welcome! Please Enter Your Table Number</h1>
+    <input type="number" id="tableInput" placeholder="Enter table number" min="1" max="20">
+    <button onclick="submitTable()">Submit</button>
+</body>
+</html>
