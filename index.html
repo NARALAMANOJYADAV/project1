@@ -1382,15 +1382,15 @@ function proceedToCheckout() {
   nextStep(6); // Proceed to requirements step
 }
 function closeTab() {
-  // Try to close the tab (may not work in all browsers due to security restrictions)
+  // Try to close the tab (works only if the page was opened via JavaScript)
   window.close();
-  
-  // Fallback for browsers that block window.close()
-  if (!window.closed) {
-    alert("To complete your exit, please close this tab manually.");
-    // Alternatively, you could redirect to another page
-    // window.location.href = "about:blank";
-  }
+
+  // Fallback: Alert if the tab couldn't be closed
+  setTimeout(() => {
+    if (!window.closed) {
+      alert("Please close this tab manually.");
+    }
+  }, 100);
 }
   </script>
 </body>
